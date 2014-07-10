@@ -13,7 +13,6 @@
 	<meta http-equiv="x-rim-auto-match" content="none" />
 	<meta name="format-detection" content="telephone=no" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<link rel="stylesheet" type="text/css" href="css/layout.css">
 	<style type="text/css">
 		body{
 			padding: 0px;
@@ -36,7 +35,8 @@
 			background: url('./img/bg2.jpg') no-repeat;
 			background-size: auto 100%;
 			-webkit-mask:url('./img/Touch1.png') no-repeat;
-			-webkit-mask-size: 100% 100%;
+			-webkit-mask-size: 400% 300%;
+			-webkit-mask-position: 0% 0%;
 		}
 	</style>
 </head>
@@ -44,5 +44,32 @@
 	<div class="stage">
 		<div class="sprite1"></div>
 	</div>
+	<script>
+	function spriteClip(dom,w,h,time){
+		if(dom){
+			this.dom = dom;
+			this.w = w ||0;
+			this.h = h ||0;
+			this.time = time || 0;
+		}else{
+			return false;
+		}
+	}
+	spriteClip.prototype.run = function(){
+		for(var w=0;w<this.w;w++){
+			for(var h =0;h<this.h;h++){
+				(function(w,h,self){
+					var time = (h*self.time*self.w+w*self.time);
+					setTimeout(function(){
+						self.dom.style.webkitMaskPosition = (100/(self.w-1))*w+'% '+(100/(self.h-1))*h+'%';
+					},time);
+				})(w,h,this);
+			}
+		}
+	}
+	var sprite1 = document.querySelector('.sprite1');
+	var sp1 = new spriteClip(sprite1,4,3,50);
+	sp1.run();
+	</script>
 </body>
 </html>
