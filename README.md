@@ -9,8 +9,7 @@
 其中多次用到了类似于云雾褪去的效果，如下图。  
 ![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/xg.gif)  
 我对这种神奇的特效产生的极大的兴趣，于是通过chrome的审查元素里面Resources找到下面这张图片（由于图片是白色的png，为了让大家看清楚我将背景调成了黑色）。  
-<img src="https://raw.githubusercontent.com/cyclegtx/burberryshow/master/img/Touch1.png" style="backgroud:#000;" alt=""> 
-
+![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/Touch1.jpg)  
 于是效果的实现方式就显而易见了，是利用css3的```-webkit-mask```来实现的。  
 ```-webkit-mask```类似于photoshop里面的蒙板，在背景图片上加上一层蒙板，背景中的图片会透过蒙板中的白色部分显示出来，蒙板中的透明部分则遮挡住了背景。  
 ####Step1.为背景加上蒙板  
