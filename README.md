@@ -103,5 +103,161 @@ var sprite1 = document.querySelector('.sprite1');
 var sp1 = new spriteClip(sprite1,4,3,50);
 sp1.run();
 ```  
-运行代码：
-![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/2.gif)  
+运行代码：  
+![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/2.gif)    
+<a href="https://github.com/cyclegtx/burberryshow/tree/b10e12cc9ef5f36e9999e0beebc2a600caa8f6a7" target="_blank">点击查看历史代码</a>    
+
+####Step3.添加动画控制  
+有了sprite1后，再添加3个sprite，将所有的动画按照顺序播放来形成完整的转场。为了实现按照顺序的播放，我们需要为动画添加播放控制。即在播放动画完成后给dom触发一个```finish```事件，dom接到完成事件后执行下一个动画。同时添加```show```和```hide```用来控制动画的显示/隐藏。   
+```javascript
+function spriteClip(dom,w,h,time){
+	if(dom){
+		......
+		//记录dom初始的display状态
+		this.display = this.dom.style.display;
+		//记录动画是否播放过
+		this.played = false;
+	}else{
+		return false;
+	}
+}
+spriteClip.prototype.run = function(){
+	//如果动画已经播放过则不做任何动画
+	if(this.played)
+		return false;
+	//标记为已播放完成
+	this.played = true;
+	//让dom显示
+	this.show();
+	for(var w=0;w<this.w;w++){
+		for(var h =0;h<this.h;h++){
+			(function(w,h,self){
+				var time = (h*self.time*self.w+w*self.time);
+				setTimeout(function(){
+					......
+					if(w >= self.w-1 && h>=self.h-1){
+						//动画结束
+						var event = document.createEvent('HTMLEvents');
+	                    event.initEvent('finish', true, true);
+	                    event.eventType = 'message';
+	                    event.content =  'finish';
+	                    //触发finish事件
+	                    self.dom.dispatchEvent(event);
+					}
+				},time);
+			})(w,h,this);
+		}
+	}
+}
+//隐藏dom
+spriteClip.prototype.hide = function(){
+	this.dom.style.display = 'none';
+}
+//显示dom
+spriteClip.prototype.show = function(){
+	this.dom.style.display = this.display;
+}
+//接收finish时间并用callback函数处理
+spriteClip.prototype.finish = function(callback){
+	this.dom.addEventListener('finish',callback);
+}
+var sprite1 = document.querySelector('.sprite1');
+var sp1 = new spriteClip(sprite1,4,3,50);
+//在做动画之前让sprite隐藏
+sp1.hide();
+document.addEventListener('touchend',function(){
+	//手指抬起后运行动画
+	sp1.run();
+});
+document.addEventListener('click',function(){
+	//点击后运行动画
+	sp1.run();
+});
+sp1.finish(function(){
+	//动画完成
+	console.log('finish');
+});
+```  
+下面添加剩下的3个sprite。  
+```html
+......
+.stage .sprite2{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: url('./img/bg2.jpg') no-repeat;
+	background-size: auto 100%;
+	-webkit-mask:url('./img/Touch2.png') no-repeat;
+	-webkit-mask-size: 400% 300%;
+	-webkit-mask-position: 0% 0%;
+}
+.stage .sprite3{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: url('./img/bg2.jpg') no-repeat;
+	background-size: auto 100%;
+	-webkit-mask:url('./img/Touch3.png') no-repeat;
+	-webkit-mask-size: 400% 300%;
+	-webkit-mask-position: 0% 0%;
+}
+.stage .sprite4{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background: url('./img/bg2.jpg') no-repeat;
+	background-size: auto 100%;
+	-webkit-mask:url('./img/Touch4.png') no-repeat;
+	/* Touch4是4*5 */
+	-webkit-mask-size: 400% 500%;
+	-webkit-mask-position: 0% 0%;
+}
+......
+<div class="stage">
+	<div class="sprite1"></div>
+	<div class="sprite2"></div>
+	<div class="sprite3"></div>
+	<div class="sprite4"></div>
+</div>
+.....
+//新建4个sprite
+var sprite1 = document.querySelector('.sprite1');
+var sprite2 = document.querySelector('.sprite2');
+var sprite3 = document.querySelector('.sprite3');
+var sprite4 = document.querySelector('.sprite4');
+var sp1 = new spriteClip(sprite1,4,3,80);
+var sp2 = new spriteClip(sprite2,4,3,80);
+var sp3 = new spriteClip(sprite3,4,3,80);
+var sp4 = new spriteClip(sprite4,4,5,80);
+sp1.hide();
+sp2.hide();
+sp3.hide();
+sp4.hide();
+document.addEventListener('touchend',function(){
+	sp1.run();
+});
+document.addEventListener('click',function(){
+	sp1.run();
+});
+sp1.finish(function(){
+	//sprite1结束后运行sprite2
+	sp2.run();
+});
+sp2.finish(function(){
+	//sprite2结束后运行sprite3
+	sp3.run();
+});
+sp3.finish(function(){
+	//sprite3结束后运行sprite4
+	sp4.run();
+})
+......
+```  
+运行代码：  
+![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/3.gif)    
