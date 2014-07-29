@@ -63,7 +63,7 @@
 }
 
 ```  
-```Touch1.png```是序列帧的整合图片，其中一排有4帧一共有3排，所以我们将```-webkit-mask-size```设为```400% 300%```。将```-webkit-mask-postion```设为```0% 0%```表示从第一帧开始。做动画时只需要依次修改```-webkit-mask-position```的x与y值，每次将x增加25%（100/每排的帧数4）直到75%，y增加33.33%（100/每牌的帧数3）直到66.66%。我们需要将每一帧的position状态在不同的时间赋给sprite1，这只需要用```setTimeout```就可以了。  
+```Touch1.png```是序列帧的整合图片，其中一排有4帧一共有3排，所以我们将```-webkit-mask-size```设为```400% 300%```。将```-webkit-mask-postion```设为```0% 0%```表示从第一帧开始。做动画时只需要依次修改```-webkit-mask-position```的x与y值，每次将x增加33.3333%（100/每排的帧数4-1）直到100%，y增加50%（100/每牌的帧数3-1）直到100%。我们需要将每一帧的position状态在不同的时间赋给sprite1，这只需要用```setTimeout```就可以了。  
 我们新建一个```spriteClip```类，并传入```(dom,w,h,time)```四个参数，其中dom用来定位sprite1这个元素，w为一排有几帧，h为一共有几行，time为每一帧之间的间隔。  
 ```javascript
 function spriteClip(dom,w,h,time){
