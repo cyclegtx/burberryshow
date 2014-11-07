@@ -4,11 +4,10 @@
 
 4月24日，Burberry亚太地区规模最大的旗舰店在上海开幕。Burberry突破性地运用了诸多创新的数字营销模式，借助与腾讯的合作，为更多未能到场的用户创造了一个“平行的体验”，也正式开启了Burberry的创新数字营销之旅。  
 
-腾讯的营销页面：
+[腾讯的营销页面:](http://burberryshow.act.qq.com/unlock/index.html)
 ![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/txqr.png)
 
-其中多次用到了类似于云雾褪去的效果，如下图。  
-![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/xg.gif)  
+其中多次用到了开头的图片中类似于云雾褪去的效果。      
 我对这种神奇的特效产生的极大的兴趣，于是通过chrome的审查元素里面Resources找到下面这张图片（由于图片是白色的png，为了让大家看清楚我将背景调成了黑色）。  
 ![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/Touch1.jpg)  
 于是效果的实现方式就显而易见了，是利用css3的```-webkit-mask```来实现的。  
