@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-title" content=""/>
+	<meta name="apple-touch-fullscreen" content="YES" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="HandheldFriendly" content="true" />
+	<meta http-equiv="x-rim-auto-match" content="none" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<style type="text/css">
+		body{
+			padding: 0px;
+			margin:0px;
+		}
+		.stage{
+			width: 320px;
+			height: 480px;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-top:-240px;
+			margin-left:-160px;
+			background: url('./img/bg.jpg') no-repeat;
+			background-size: auto 100%;
+		}
+		.stage .sprite1{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			background: url('./img/bg2.jpg') no-repeat;
+			background-size: auto 100%;
+			-webkit-mask:url('./img/Touch1.png') no-repeat;
+			-webkit-mask-size: 400% 300%;
+			-webkit-mask-position: 0% 0%;
+		}
+		.stage .sprite2{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			background: url('./img/bg2.jpg') no-repeat;
+			background-size: auto 100%;
+			-webkit-mask:url('./img/Touch2.png') no-repeat;
+			-webkit-mask-size: 400% 300%;
+			-webkit-mask-position: 0% 0%;
+		}
+		.stage .sprite3{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			background: url('./img/bg2.jpg') no-repeat;
+			background-size: auto 100%;
+			-webkit-mask:url('./img/Touch3.png') no-repeat;
+			-webkit-mask-size: 400% 300%;
+			-webkit-mask-position: 0% 0%;
+		}
+		.stage .sprite4{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			background: url('./img/bg2.jpg') no-repeat;
+			background-size: auto 100%;
+			-webkit-mask:url('./img/Touch4.png') no-repeat;
+			-webkit-mask-size: 400% 500%;
+			-webkit-mask-position: 0% 0%;
+		}
+	</style>
+</head>
+<body>
+	<div class="stage">
+		<div class="sprite1"></div>
+		<div class="sprite2"></div>
+		<div class="sprite3"></div>
+		<div class="sprite4"></div>
+	</div>
+	<script>
+	function spriteClip(dom,w,h,time){
+		if(dom){
+			this.dom = dom;
+			this.w = w ||0;
+			this.h = h ||0;
+			this.time = time || 0;
+			this.display = this.dom.style.display;
+			this.played = false;
+		}else{
+			return false;
+		}
+	}
+	spriteClip.prototype.run = function(){
+		if(this.played)
+			return false;
+		this.played = true;
+		this.show();
+		for(var w=0;w<this.w;w++){
+			for(var h =0;h<this.h;h++){
+				(function(w,h,self){
+					var time = (h*self.time*self.w+w*self.time);
+					setTimeout(function(){
+						self.dom.style.webkitMaskPosition = (100/(self.w-1))*w+'% '+(100/(self.h-1))*h+'%';
+						if(w >= self.w-1 && h>=self.h-1){
+							var event = document.createEvent('HTMLEvents');
+		                    event.initEvent('finish', true, true);
+		                    event.eventType = 'message';
+		                    event.content =  'finish';
+		                    self.dom.dispatchEvent(event);
+						}
+					},time);
+				})(w,h,this);
+			}
+		}
+	}
+	spriteClip.prototype.hide = function(){
+		this.dom.style.display = 'none';
+	}
+	spriteClip.prototype.show = function(){
+		this.dom.style.display = this.display;
+	}
+	spriteClip.prototype.finish = function(callback){
+		this.dom.addEventListener('finish',callback);
+	}
+	var sprite1 = document.querySelector('.sprite1');
+	var sprite2 = document.querySelector('.sprite2');
+	var sprite3 = document.querySelector('.sprite3');
+	var sprite4 = document.querySelector('.sprite4');
+	var sp1 = new spriteClip(sprite1,4,3,80);
+	var sp2 = new spriteClip(sprite2,4,3,80);
+	var sp3 = new spriteClip(sprite3,4,3,80);
+	var sp4 = new spriteClip(sprite4,4,5,80);
+	sp1.hide();
+	sp2.hide();
+	sp3.hide();
+	sp4.hide();
+	document.addEventListener('touchend',function(){
+		sp1.run();
+	});
+	document.addEventListener('click',function(){
+		sp1.run();
+	});
+	sp1.finish(function(){
+		sp2.run();
+	});
+	sp2.finish(function(){
+		sp3.run();
+	});
+	sp3.finish(function(){
+		sp4.run();
+	})
+	</script>
+</body>
+</html>

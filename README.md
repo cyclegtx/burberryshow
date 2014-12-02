@@ -1,6 +1,5 @@
 腾讯Burberry线上营销页面特效
 ============
-![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/xg.gif)  
 
 4月24日，Burberry亚太地区规模最大的旗舰店在上海开幕。Burberry突破性地运用了诸多创新的数字营销模式，借助与腾讯的合作，为更多未能到场的用户创造了一个“平行的体验”，也正式开启了Burberry的创新数字营销之旅。  
 
@@ -261,6 +260,3 @@ sp3.finish(function(){
 ```  
 运行代码：  
 ![最终效果](https://raw.githubusercontent.com/cyclegtx/burberryshow/master/images/3.gif)    
-
-
-更多教程请访问：[ued.sexy](http://ued.sexy)  
